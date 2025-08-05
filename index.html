@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Peça seu acarajé e passarinha com Maga do Acarajé">
+  <title>Maga do Acarajé</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    body { font-family: sans-serif; background: #fffaf0; margin: 0; padding: 0; color: #333; }
+    header { background: #d92b2b; color: white; padding: 1rem; text-align: center; }
+    main { padding: 1rem; max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 1rem; }
+    input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border-radius: 4px; border: 1px solid #ccc; }
+    button { background: #d92b2b; color: white; border: none; padding: 0.75rem; width: 100%; margin-top: 1rem; font-size: 1rem; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #b52020; }
+    .info { background: #fff3cd; padding: 1rem; margin-top: 1rem; border-left: 5px solid #ffc107; }
+    .footer { text-align: center; font-size: 0.85rem; margin-top: 2rem; color: #888; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Maga do Acarajé</h1>
+    <p>Peça agora seu acarajé quentinho!</p>
+  </header>
+  <main>
+    <div class="info">
+      <p>🕒 <strong>Horário de atendimento:</strong> 7h às 17h</p>
+      <p>💳 Aceitamos Pix e Dinheiro</p>
+    </div>
+    <form id="orderForm">
+      <label>Nome completo:</label>
+      <input type="text" id="nome" placeholder="Ex: Maria Silva" required><label>Telefone (com DDD):</label>
+  <input type="tel" id="telefone" placeholder="Ex: 81912345678" required>
+
+  <label>Localização (bairro, rua ou ponto de referência):</label>
+  <textarea id="local" rows="2" placeholder="Ex: Rua A, nº123 - Próximo à padaria" required></textarea>
+
+  <label>Quantidade de Acarajés (R$2,00):</label>
+  <input type="number" id="acaraje" min="0" value="0">
+
+  <label>Quantidade de Passarinhas (R$2,50):</label>
+  <input type="number" id="passarinha" min="0" value="0">
+
+  <label>Observações adicionais:</label>
+  <textarea id="obs" rows="2" placeholder="Ex: Sem pimenta"></textarea>
+
+  <button type="submit">Enviar pedido via WhatsApp</button>
+</form>
+<button onclick="compartilhar()">📤 Compartilhar este site</button>
+<p class="footer">&copy; 2025 Maga do Acarajé - Todos os direitos reservados.</p>
+
+  </main>  <script>
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const local = document.getElementById('local').value.trim();
+      const acaraje = parseInt(document.getElementById('acaraje').value) || 0;
+      const passarinha = parseInt(document.getElementById('passarinha').value) || 0;
+      const obs = document.getElementById('obs').value.trim();
+
+      if (nome.split(' ').length < 2) {
+        alert('Por favor, insira seu nome completo (nome e sobrenome).');
+        return;
+      }
+
+      if (!/^\d{11}$/.test(telefone)) {
+        alert('Por favor, insira um número válido com DDD (ex: 81912345678).');
+        return;
+      }
+
+      if (!local) {
+        alert('Por favor, preencha sua localização.');
+        return;
+      }
+
+      if (acaraje === 0 && passarinha === 0) {
+        alert('Adicione ao menos 1 item ao pedido.');
+        return;
+      }
+
+      const total = (acaraje * 2 + passarinha * 2.5).toFixed(2);
+
+      let mensagem = `📦 Pedido para *Maga do Acarajé*\n\n`;
+      mensagem += `👤 Cliente: ${nome}\n`;
+      mensagem += `📞 Telefone: ${telefone}\n`;
+      mensagem += `📍 Local: ${local}\n`;
+      mensagem += `🛒 Pedido:`;
+      if (acaraje > 0) mensagem += `\n- ${acaraje} Acarajé(s) (R$2,00)`;
+      if (passarinha > 0) mensagem += `\n- ${passarinha} Passarinha(s) (R$2,50)`;
+      if (obs) mensagem += `\n📝 Obs: ${obs}`;
+      mensagem += `\n\n💰 Total: R$${total}`;
+
+      const numeroMaga = '5581920011169';
+      const url = `https://wa.me/${numeroMaga}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    });
+
+    function compartilhar() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Maga do Acarajé',
+          text: 'Peça acarajé e passarinha com Maga do Acarajé!',
+          url: window.location.href
+        });
+      } else {
+        alert('Seu navegador não suporta compartilhamento automático.');
+      }
+    }
+  </script></body>
+</html>
